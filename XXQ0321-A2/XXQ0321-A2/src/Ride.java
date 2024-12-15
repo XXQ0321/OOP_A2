@@ -61,3 +61,135 @@ public class Ride {
     public Integer getTicketprice() {
         return ticketprice;
     }
+
+    public void setTicketprice(Integer ticketprice) {
+        this.ticketprice = ticketprice;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Ride(String ridename, String isopen, Integer ticketprice, Employee employee) {
+        this.ridename = ridename;
+        this.isopen = isopen;
+        this.ticketprice = ticketprice;
+        this.employee = employee;
+    }
+
+    public Ride() {
+        this.rideHistory = new LinkedList<Visitor>();
+        this.queue = new Queue();
+    }
+
+    Queue queueInfo =  new Queue();
+    public void addVisitorToQueue(Visitor visitor) {
+        queueInfo.addVisitor(visitor);
+        System.out.println(visitor.getName() + "已加入到游乐设施的队列中");
+    }
+
+    public void removeVisitorFromQueue() {
+        Visitor visitor = queueInfo.removeVisitor();
+        System.out.println(visitor.getName() + "已被从队列中移除！");
+    }
+
+
+    public void removeVisitorFromQueueByIndex(int index) {
+        Visitor visitor = queueInfo.removeVisitorByIndex(index);
+        System.out.println(visitor.getName() + "已被从队列中移除！");
+    }
+    public void printQueue() {
+        queueInfo.printQueue();
+    }
+
+
+    private void addVisitorToHistory(Visitor visitor) {
+
+        rideHistory.add(visitor);
+        System.out.println(visitor.getName() + "已添加到历史中");
+    }
+
+
+    public boolean checkVisitorFromHistory(Visitor visitor) {
+        return this.rideHistory.contains(visitor);
+    }
+
+    public int numberOfVisitors() {
+        return this.rideHistory.size();
+    }
+
+    public void printRideHistory() {
+        if (this.rideHistory.isEmpty()) {
+        } else {
+            Iterator<Visitor> iterator = rideHistory.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
+        }
+    }
+
+
+    // 新增排序方法
+    public void sortRideHistory() {
+        Collections.sort(this.rideHistory, new VisitorComparator());
+        System.out.println("乘车记录已按姓名和年龄排序");
+    }
+
+    public void runOneCycle() {
+        // 检查队列中是否有访客
+        int ridersThisCycle = Math.min(maxRiders, 1); // 根据 maxRiders 和队列大小计算本周期乘客数
+
+        for (int i = 0; i < ridersThisCycle; i++) {
+            removeVisitorFromQueue(); // 让访客乘坐，并从队列中移除
+        }
+
+        numOfCycles++; // 增加运行次数
+    }
+
+
+    public void exportRideHistory(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Visitor visitor : this.rideHistory) {
+                writer.write(visitor.toString());
+                writer.newLine(); // 写入换行符
+            }
+            System.out.println("文件" + filename + " 保存成功");
+        } catch (IOException e) {
+            System.err.println("存储失败 " + e.getMessage());
+        }
+    }
+
+    public void importRideHistory(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // 假设 Visitor 的构造函数可以从字符串中解析出名字和年龄
+                String[] parts = line.split(", Age: ");
+                if (parts.length == 2) {
+                    String name = parts[0];
+                    int age;
+                    try {
+                        age = Integer.parseInt(parts[1]);
+                        Visitor visitor = new Visitor(name, "2");
+                        this.rideHistory.add(visitor); // 将 Visitor 添加到历史中
+                        System.out.println(visitor.getName() + " 已导入到历史记录中。");
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid age format for visitor: " + parts[1]);
+                    }
+                } else {
+
+                }
+            }
+            System.out.println("从" + filename + " 导入成功");
+        } catch (IOException e) {
+            System.err.println("读取错误 " + e.getMessage());
+        }
+    }
+
+    public int getVisitorCount() {
+        return this.rideHistory.size(); // 返回访客数量
+    }
