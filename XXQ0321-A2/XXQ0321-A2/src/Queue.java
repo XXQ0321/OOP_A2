@@ -27,7 +27,7 @@ public class Queue {
 
     public void printQueue() {
         if (visitors.isEmpty()) {
-            System.out.println("队列是空的");
+            System.out.println("The queue is empty");
         } else {
             for (Visitor visitor : visitors) {
                 System.out.println(visitor);
