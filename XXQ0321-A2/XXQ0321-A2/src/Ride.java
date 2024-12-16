@@ -89,18 +89,18 @@ public class Ride {
     Queue queueInfo =  new Queue();
     public void addVisitorToQueue(Visitor visitor) {
         queueInfo.addVisitor(visitor);
-        System.out.println(visitor.getName() + "已加入到游乐设施的队列中");
+        System.out.println(visitor.getName() + " have joined the queue of amusement facilities");
     }
 
     public void removeVisitorFromQueue() {
         Visitor visitor = queueInfo.removeVisitor();
-        System.out.println(visitor.getName() + "已被从队列中移除！");
+        System.out.println(visitor.getName() + " removed from the queue!");
     }
 
 
     public void removeVisitorFromQueueByIndex(int index) {
         Visitor visitor = queueInfo.removeVisitorByIndex(index);
-        System.out.println(visitor.getName() + "已被从队列中移除！");
+        System.out.println(visitor.getName() + " removed from the queue!");
     }
     public void printQueue() {
         queueInfo.printQueue();
@@ -110,7 +110,7 @@ public class Ride {
     private void addVisitorToHistory(Visitor visitor) {
 
         rideHistory.add(visitor);
-        System.out.println(visitor.getName() + "已添加到历史中");
+        System.out.println(visitor.getName() + " added to history");
     }
 
 
@@ -136,7 +136,7 @@ public class Ride {
     // 新增排序方法
     public void sortRideHistory() {
         Collections.sort(this.rideHistory, new VisitorComparator());
-        System.out.println("乘车记录已按姓名和年龄排序");
+        System.out.println("Ride records have been sorted by name and age");
     }
 
     public void runOneCycle() {
@@ -155,11 +155,11 @@ public class Ride {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Visitor visitor : this.rideHistory) {
                 writer.write(visitor.toString());
-                writer.newLine(); // 写入换行符
+                writer.newLine();
             }
-            System.out.println("文件" + filename + " 保存成功");
+            System.out.println("File" + filename + " save successfully");
         } catch (IOException e) {
-            System.err.println("存储失败 " + e.getMessage());
+            System.err.println("Storage failure " + e.getMessage());
         }
     }
 
@@ -176,7 +176,7 @@ public class Ride {
                         age = Integer.parseInt(parts[1]);
                         Visitor visitor = new Visitor(name, "2");
                         this.rideHistory.add(visitor); // 将 Visitor 添加到历史中
-                        System.out.println(visitor.getName() + " 已导入到历史记录中。");
+                        System.out.println(visitor.getName() + " have imported it to the history.");
                     } catch (NumberFormatException e) {
                         System.err.println("Invalid age format for visitor: " + parts[1]);
                     }
@@ -184,12 +184,15 @@ public class Ride {
 
                 }
             }
-            System.out.println("从" + filename + " 导入成功");
+            System.out.println("From" + filename + " import successfully");
         } catch (IOException e) {
-            System.err.println("读取错误 " + e.getMessage());
+            System.err.println("Read error " + e.getMessage());
         }
     }
 
     public int getVisitorCount() {
         return this.rideHistory.size(); // 返回访客数量
     }
+
+
+}
