@@ -89,7 +89,7 @@ public class AssignmentTwo {
 
        // 模拟访客乘坐游乐设施
        for (int i = 0; i < 5; i++) {
-           ride.removeVisitorFromQueue(); // 所有访客依次乘坐
+           ride.removeVisitorFromQueue(); 
        }
 
        // 打印历史记录的访客
